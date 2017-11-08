@@ -1,6 +1,7 @@
 #!/usr/sbin/env bash
 
 set -exuo pipefail
+export DISPLAY=:0
 
 dir="${HOME}/.splasher"
 wallpaper_name="background.jpg"

@@ -7,3 +7,5 @@
 ### TO DOs:
 + Load images from specific category.
 + Load images from search results.
++ store downloaded images (optional)
++ read configs from config file.

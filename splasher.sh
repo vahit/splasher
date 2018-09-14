@@ -1,23 +1,31 @@
 #!/usr/sbin/env bash
 
-set -exuo pipefail
+set -exo pipefail
 export DISPLAY=:0
 
-dir="${HOME}/.splasher"
-wallpaper_name="background.jpg"
+source ~/.config/splasher.conf
 
-if [[ ! -d "${dir}" ]]; then
-    mkdir "${dir}"
+DIR=${DIR:-${HOME}/.splaser}
+ORIENTATION=${ORIENTATION:-"landscape"}
+[ -z ${CLIENT_ID} ] && exit 1
+
+if [[ ! -d "${DIR}" ]]; then
+    mkdir "${DIR}"
 fi
 
-cd "${dir}"
+cd "${DIR}"
 
-if [[ -z "$wallpaper_name" ]]; then
-    rm "${wallpaper_name}"
+if [[ -z "${WALLPAPER_NAME}" ]]; then
+    rm "${WALLPAPER_NAME}"
 fi
 
-image_URL=$(curl "https://api.unsplash.com/photos/random?client_id=19aada4dabad279cf21e37342f6277d865e58b1336ba7d6f5a2038793d35ea7c" | jq -r '.urls.full')
-wget $image_URL --output-document="${wallpaper_name}"
-feh --bg-fill "${wallpaper_name}"
+if [[ -z ${SEARCH_TERM} ]]; then
+    image_URL=$(curl "https://api.unsplash.com/photos/random?orientation=${ORIENTATION}&client_id=${CLIENT_ID}" | jq -r '.urls.full')
+else
+    image_URL=$(curl "https://api.unsplash.com/photos/random?orientation=${ORIENTATION}&query=${SEARCH_TERM}&client_id=${CLIENT_ID}" | jq -r '.urls.full')
+fi
+
+curl -0 ${image_URL} -o ${WALLPAPER_NAME}
+feh --bg-fill "${WALLPAPER_NAME}"
 
 exit 0

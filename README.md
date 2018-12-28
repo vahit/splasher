@@ -21,6 +21,7 @@ You should ensure that the following packages are installed on your system.
 ---
 
 ### TO DOs:
++ search not support multiwords terms like "night sky"
 + ~~Load images from specific category.~~
 + ~~Load images from search results.~~
 + store downloaded images (optional)

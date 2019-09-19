@@ -20,9 +20,14 @@ if [[ -z "${WALLPAPER_NAME}" ]]; then
 fi
 
 if [[ -z ${SEARCH_TERMS} ]]; then
-    image_URL=$(curl "https://api.unsplash.com/photos/random?orientation=${ORIENTATION}&client_id=${CLIENT_ID}" | jq -r '.urls.full')
+    image_URL=$(curl -G "https://api.unsplash.com/photos/random" \
+        --data-urlencode "orientation=${ORIENTATION}" \
+        --data-urlencode "client_id=${CLIENT_ID}" | jq -r '.urls.full')
 else
-    image_URL=$(curl "https://api.unsplash.com/photos/random?orientation=${ORIENTATION}&query=${SEARCH_TERMS}&client_id=${CLIENT_ID}" | jq -r '.urls.full')
+    image_URL=$(curl -G "https://api.unsplash.com/photos/random" \
+        --data-urlencode "orientation=${ORIENTATION}" \
+        --data-urlencode "query=${SEARCH_TERMS// /-}" \
+        --data-urlencode "client_id=${CLIENT_ID}" | jq -r '.urls.full')
 fi
 
 curl -0 ${image_URL} -o ${WALLPAPER_NAME}
